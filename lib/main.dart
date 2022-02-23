@@ -8,6 +8,7 @@ import 'package:untitled1/Main_Screen.dart';
 import 'package:untitled1/Paid_Screen.dart';
 import 'package:untitled1/Payment_Screen.dart';
 import 'package:untitled1/Splash_Screen.dart';
+import 'NotCountred_Screen.dart';
 
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         Bills_Screen.id:(contex) => Bills_Screen(),
         Payment_Screen.id:(context) =>Payment_Screen(),
         Paid_Screen.id:(context) =>Paid_Screen(),
+        NotCounterd.id:(context) => NotCounterd(),
       },
     );
   }

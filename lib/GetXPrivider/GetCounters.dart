@@ -110,12 +110,12 @@ class GetCounters extends GetxController{
   void getlast() async {
     EasyLoading.show();
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    if (_prefs.getBool('first') == false) {
+    try{
       lastUpdate = formatDate(
           DateTime.parse(_prefs.getString('lastupdate').toString()),
           [hh, ':', nn, ' ', dd, '-', mm, '-', yyyy]) +
           ': آخر تحديث';
-    } else {
+    } catch(err) {
       lastUpdate = 'Please Update';
     }
     EasyLoading.dismiss();
@@ -169,10 +169,15 @@ class GetCounters extends GetxController{
     Value = value;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var Clients = json.decode(_prefs.getString('allclients').toString());
-    for (var i in Clients) {
-      if (i['name'] == value) {
-      ID = i['id'];
+    try {
+      for (var i in Clients) {
+        if (i['name'] == value) {
+          ID = i['id'];
+        }
       }
+    }
+    catch(err){
+
     }
 
     update();
@@ -355,12 +360,11 @@ class GetCounters extends GetxController{
     EasyLoading.dismiss();
     update();
   }
-  void setvalidatefalse(bool vali){
-    vali= false;
-   update();
-  }
-  void setvalidatetrue(bool vali){
-    vali = true;
+
+  void setvalidatetrue(int vali,int kkk){
+    vali= 1;
+    print(vali);
+
     update();
 
   }
@@ -373,5 +377,23 @@ class GetCounters extends GetxController{
       }
     }
     update();
+  }
+  void validate(TextEditingController search,String last,bool valid){
+
+    if (checkifnum(search.text
+        .toString()) ==
+        true ||
+        int.parse(search.text) <=
+            int.parse(
+                last)){
+      valid= true;
+
+    }
+    else{
+      valid = false;
+
+    }
+    update();
+
   }
 }

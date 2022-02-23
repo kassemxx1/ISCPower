@@ -108,6 +108,7 @@ class GetBills extends GetxController{
     Value='';
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var Clients = json.decode(_prefs.getString('allbills').toString());
+    try{
     for (var i in Clients) {
       if (type == 'names') {
         suggestions.add(i['names'].toString());
@@ -118,6 +119,9 @@ class GetBills extends GetxController{
       if (type == 'billnumb') {
         suggestions.add(i['billnumb'].toString());
       }
+    }}
+    catch(err){
+
     }
     Bills_Screen.SearchController.text = ' ';
     Bills_Screen.SearchController.clear();
@@ -151,13 +155,14 @@ class GetBills extends GetxController{
   }
 // get the specific bill of selected client
   void getBill(String id) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
     EasyLoading.show();
       TempList.clear();
     var url = Uri.parse(UrlHeroku + 'getSpecificbill');
     try {
       Map<String, dynamic> bbb = {
         'year': DateTime.now().year,
-        'month': 2,
+        'month': int.tryParse(_prefs.getString('monthnumber').toString()),
         'id': ID,
       };
       var response = await http.post(url,
@@ -195,12 +200,12 @@ class GetBills extends GetxController{
   void getlast() async {
     EasyLoading.show();
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    if (_prefs.getBool('first') == false) {
+    try{
       lastbill = formatDate(
           DateTime.parse(_prefs.getString('lastupdatebill').toString()),
           [hh, ':', nn, ' ', dd, '-', mm, '-', yyyy]) +
           ': آخر تحديث';
-    } else {
+    } catch(err) {
       lastbill = 'Please Update';
     }
     EasyLoading.dismiss();

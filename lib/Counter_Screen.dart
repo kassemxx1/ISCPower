@@ -30,13 +30,6 @@ class Counter_Screen extends StatelessWidget {
         actions: [
           GetBuilder<GetCounters>(
             init: GetCounters(),
-            builder: (val) =>
-                IconButton(onPressed: () {
-                  val.getnotfilled();
-                }, icon: Icon(Icons.filter_alt)),
-          ),
-          GetBuilder<GetCounters>(
-            init: GetCounters(),
             builder: (val) => IconButton(
                 onPressed: () {
                   val.getclients();
@@ -264,7 +257,8 @@ class Counter_Screen extends StatelessWidget {
                                       flex: 3,
                                       child: TextField(
                                         onChanged: (value) {
-                                          val.setvalidatefalse(client.valid);
+
+
                                           // blocpro.setvalidatefalse(
                                           //     client._validate);
                                         },
@@ -287,6 +281,7 @@ class Counter_Screen extends StatelessWidget {
                                     flex: 4,
                                     child: MaterialButton(
                                       onPressed: () async {
+                                        val.validate(client.cont, client.LastCounter,client.valid);
 
 
                                         if (val.checkifnum(client.cont.text
@@ -295,11 +290,10 @@ class Counter_Screen extends StatelessWidget {
                                             int.parse(client.cont.text) <=
                                                 int.parse(
                                                     client.LastCounter)) {
-                                            client.valid=true;
+
 
                                         } else {
-                                          val.setvalidatefalse(
-                                              client.valid);
+
 
                                           SharedPreferences _prefs =
                                           await SharedPreferences

@@ -4,6 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/Bills_Screen.dart';
 import 'package:untitled1/Counter_Screen.dart';
 import 'package:untitled1/GetXPrivider/GetMain.dart';
+import 'package:untitled1/NotCountred_Screen.dart';
+import 'package:untitled1/Setting_Screen.dart';
+
+import 'Constants.dart';
 import 'Login_Screen.dart';
 import 'Paid_Screen.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -19,7 +23,7 @@ class Main_Screen extends StatelessWidget {
         title: Hero(
             tag: 'test',
             child: Text(
-              'Home',
+              NameofIshtirak,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 25,
@@ -142,6 +146,7 @@ class Main_Screen extends StatelessWidget {
                 ),
               ),
             ),
+
         ]),
       ),
           )),
@@ -252,7 +257,9 @@ class Main_Screen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(NotCounterd());
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 2),
@@ -400,7 +407,9 @@ class Main_Screen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(Setting_Secreen());
+                },
                 child: Card(
                   elevation: 20,
                   child: Container(
