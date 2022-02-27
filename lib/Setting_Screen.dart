@@ -82,6 +82,35 @@ class _Setting_SecreenState extends State<Setting_Secreen> {
       });
     }
   }
+  void invoices() async{
+
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    //SIZE
+    // 0- normal size text
+    // 1- only bold text
+    // 2- bold with medium text
+    // 3- bold with large text
+    //ALIGN
+    // 0- ESC_ALIGN_LEFT
+    // 1- ESC_ALIGN_CENTER
+    // 2- ESC_ALIGN_RIGHT
+    bluetooth.printNewLine();
+    bluetooth.printCustom('  Alwaffa قاسم  ', 2, 1);
+    bluetooth.printCustom('  03215209   قاسم  ', 1, 1);
+    bluetooth.printCustom('  07766765   قاسم  ', 1, 1);
+    bluetooth.printCustom( 'collector:${_prefs.getString('username')} ', 1, 1);
+    bluetooth.printCustom(' ' + DateTime.now().toString(), 1, 1);
+    bluetooth.printCustom('  ------------------  ', 2, 1);
+    bluetooth.printCustom('  ------------------  ', 2, 1);
+    bluetooth.printNewLine();
+    bluetooth.printCustom(  'قاسم عبود قاسم قاسم ', 2, 1);
+    bluetooth.printNewLine();
+    bluetooth.printNewLine();
+
+
+
+
+  }
 
   void _disconnect() {
     bluetooth.disconnect();
@@ -100,8 +129,9 @@ class _Setting_SecreenState extends State<Setting_Secreen> {
 
     try {
       devices = await bluetooth.getBondedDevices();
-    } on PlatformException {
-      // TODO - Error
+    }
+    catch(err){
+
     }
 
     bluetooth.onStateChanged().listen((state) {
@@ -328,6 +358,11 @@ class _Setting_SecreenState extends State<Setting_Secreen> {
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
+                        MaterialButton(onPressed: (){
+                          invoices();
+                        },
+                        child: Text( 'Test'),
+                        )
                       ],
                     ),
 

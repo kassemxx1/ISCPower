@@ -10,8 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Bills_Screen.dart';
 import '../Constants.dart';
-import '../Main_Screen.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 class GetBills extends GetxController{
   List<String> suggestions = [];
   var TempList = [];

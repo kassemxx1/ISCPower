@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 class GetMain extends GetxController{
   var counter ='';
   var totalcounter ='';
@@ -12,6 +12,7 @@ class GetMain extends GetxController{
   var totalbill='';
   var name ='';
   var user='';
+  var udid='';
 
   @override
   void onInit() {
@@ -21,6 +22,7 @@ class GetMain extends GetxController{
     getrecords(4);
     getbalance();
     getinformation();
+    getUDID();
   }
   void getrecords(int option) async{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -99,5 +101,12 @@ class GetMain extends GetxController{
     name = _prefs.getString('nameofuser').toString();
     user = _prefs.getString('user').toString();
 
+  }
+  void getUDID() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    udid = await FlutterUdid.consistentUdid;
+    _prefs.setString('udid', udid);
+    update();
   }
 }

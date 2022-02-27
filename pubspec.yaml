@@ -41,11 +41,12 @@ dependencies:
   flutter_easyloading: ^3.0.3
   date_format: ^2.0.5
   fluttertoast: ^8.0.8
-  blue_thermal_printer: ^1.2.0
+  blue_thermal_printer: ^1.1.9
   flutter_multi_formatter: ^2.5.1
   flutter_dropdown: ^1.0.0+hotfix.1
   get: ^4.6.1
   flutter_udid: ^2.0.0
+  connectivity_plus: ^2.2.1
 
 dev_dependencies:
   flutter_test:

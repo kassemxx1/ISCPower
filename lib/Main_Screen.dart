@@ -9,6 +9,7 @@ import 'package:untitled1/Setting_Screen.dart';
 
 import 'Constants.dart';
 import 'Login_Screen.dart';
+import 'OfflineCounter_Screen.dart';
 import 'Paid_Screen.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
@@ -89,6 +90,7 @@ class Main_Screen extends StatelessWidget {
                             val.user,style: TextStyle(
                               fontSize: 20)
                           ),
+                          val.user=='kassem123'?Text(val.udid):Text(''),
                         ],
                       ),
                     ),
@@ -190,6 +192,53 @@ class Main_Screen extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                   color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(OfflineCounter_Screen());
+                },
+                child: Card(
+                  elevation: 20,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 2),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.lightbulb,
+                              color: Colors.red,
+                              size: 50,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Center(
+                              child: Text(
+                                'Offline Counter',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.black),
+                              ),
                             ),
                           ],
                         ),

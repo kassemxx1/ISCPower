@@ -9,11 +9,16 @@ import 'package:easy_autocomplete/easy_autocomplete.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-class Counter_Screen extends StatelessWidget {
+class Counter_Screen extends StatefulWidget {
   static const String id = 'Counter_Screen';
   static TextEditingController SearchController = TextEditingController();
   const Counter_Screen({Key? key}) : super(key: key);
 
+  @override
+  State<Counter_Screen> createState() => _Counter_ScreenState();
+}
+
+class _Counter_ScreenState extends State<Counter_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +108,7 @@ class Counter_Screen extends StatelessWidget {
                           padding: EdgeInsets.all(10),
                           alignment: Alignment.center,
                           child: EasyAutocomplete(
-                            controller: SearchController,
+                            controller: Counter_Screen.SearchController,
                             suggestions: val.suggestions,
                             autofocus: false,
                             onChanged: (value) {
@@ -135,7 +140,7 @@ class Counter_Screen extends StatelessWidget {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
                               onPressed: () {
-                                SearchController.clear();
+                                Counter_Screen.SearchController.clear();
                                 val.GetInfo(val.Value, val.Type);
 
 
@@ -257,7 +262,7 @@ class Counter_Screen extends StatelessWidget {
                                       flex: 3,
                                       child: TextField(
                                         onChanged: (value) {
-
+                                          client.valid =false;
 
                                           // blocpro.setvalidatefalse(
                                           //     client._validate);
@@ -290,10 +295,12 @@ class Counter_Screen extends StatelessWidget {
                                             int.parse(client.cont.text) <=
                                                 int.parse(
                                                     client.LastCounter)) {
-
+                                          setState(() {
+                                            client.valid =true;
+                                          });
 
                                         } else {
-
+                                          client.valid =false;
 
                                           SharedPreferences _prefs =
                                           await SharedPreferences
@@ -395,6 +402,7 @@ class Counter_Screen extends StatelessWidget {
                                       Text( client.id),
                                       Text( client.name),
                                       Text(val.phone),
+
                                     ],
                                   ),
                                 ),
@@ -427,6 +435,7 @@ class client {
   String CurrentCounter;
   TextEditingController cont;
   String phone;
+  bool submitted;
   client(this.valid,this.id, this.name, this.LastCounter, this.CurrentCounter, this.cont,
-       this.phone);
+       this.phone,this.submitted);
 }

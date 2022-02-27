@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import '../Constants.dart';
 import '../Counter_Screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import '../OfflineCounter_Screen.dart';
 class GetCounters extends GetxController{
   List<String> suggestions = [];
   var TempList = [];
@@ -18,19 +20,21 @@ class GetCounters extends GetxController{
   var phone='';
   bool loading = false;
   var lastUpdate = '';
+  var offlinelist=[];
+  var count = 0;
   String last ='';
+  var connected =false;
   @override
-  void onInit() {
+  void onInit() async {
+
     // TODO: implement onInit
     super.onInit();
     getlast();
-  }
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
     getsuggestion('name');
+    getonline();
+    getofflinelist();
   }
+
   @override
   void onClose() {
     // TODO: implement onClose
@@ -56,6 +60,7 @@ class GetCounters extends GetxController{
           var box = i['boxcode'].toString();
           var phone = i['smsmobile'].toString();
           var areacode = i['areacode'].toString();
+          var oldcounter = i['oldcounter'].toString();
 
           clientdesc.add({
             'id': id,
@@ -64,6 +69,7 @@ class GetCounters extends GetxController{
             'box': box,
             'phone': phone,
             'areacode': areacode,
+            'oldcounter':oldcounter
           });
         }
         _prefs.setString('lastupdate', DateTime.now().toString());
@@ -148,20 +154,29 @@ class GetCounters extends GetxController{
     var Clients = json.decode(_prefs.getString('allclients').toString());
 
     suggestions.clear();
-    for (var i in Clients) {
-      if (type == 'name') {
-     suggestions.add(i['name'].toString());
-      }
-      if (type == 'box') {
-       suggestions.add(i['box'].toString());
-      }
-      if (type == 'id') {
-        suggestions.add(i['id'].toString());
+    try{
+      for (var i in Clients) {
+        if (type == 'name') {
+          suggestions.add(i['name'].toString());
+        }
+        if (type == 'box') {
+          suggestions.add(i['box'].toString());
+        }
+        if (type == 'id') {
+          suggestions.add(i['id'].toString());
+        }
       }
     }
+    catch(err){
+
+    }
+
     Counter_Screen.SearchController.text = ' ';
     Value='';
     Counter_Screen.SearchController.clear();
+    OfflineCounter_Screen.SearchController.text = ' ';
+    Value='';
+    OfflineCounter_Screen.SearchController.clear();
     update();
   }
 
@@ -233,6 +248,7 @@ class GetCounters extends GetxController{
                 'controller' + Clients.indexOf(i).toString()),
 
             getphone(i['clientcode'].toString()),
+            false,
 
           ));
           Fluttertoast.showToast(
@@ -273,6 +289,7 @@ class GetCounters extends GetxController{
     EasyLoading.dismiss();
     update();
   }
+
   //get all the clients not filled counter
   void getnotfilled() async {
     EasyLoading.show();
@@ -321,6 +338,7 @@ class GetCounters extends GetxController{
                 'controller' + Clients.indexOf(i).toString()),
 
             getphone(i['clientcode'].toString()),
+                false,
           ));
           Fluttertoast.showToast(
               msg: "success",
@@ -395,5 +413,112 @@ class GetCounters extends GetxController{
     }
     update();
 
+  }
+
+  void getofflinecounter(String value, String Type) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var Clients = json.decode(_prefs.getString('allclients').toString());
+    EasyLoading.show();
+    TempList.clear();
+    setcontname(String n) {
+      var n = TextEditingController();
+      return n;
+    }
+    String getphone(String idd){
+
+      for (var i in Clients){
+        if (i['id']==idd){
+          print(i['phone']);
+          return i['phone'];
+
+        }
+        else{
+          return '';
+        }
+      }
+      return '';
+    }
+    if(Type == 'name'){
+      for(var i in Clients){
+        if(i['id']== ID){
+          TempList.add(client(
+            false,
+            i['id'].toString(),
+            i['name'].toString(),
+            i['oldcounter'].toString(),
+            '0',
+            setcontname(
+                'controller' + Clients.indexOf(i).toString()),
+
+            getphone(i['clientcode'].toString()),
+            false,
+
+          ));
+        }
+
+      }
+    }
+    if(Type=='box'){
+      for(var i in Clients){
+        if(i['box']== Value){
+          TempList.add(client(
+            false,
+            i['id'].toString(),
+            i['name'].toString(),
+            i['oldcounter'].toString(),
+            '0',
+            setcontname(
+                'controller' + Clients.indexOf(i).toString()),
+            getphone(i['clientcode'].toString()),
+            false
+          ));
+        }
+      }
+    }
+    else{
+      for(var i in Clients){
+        if(i['id']== Value){
+          TempList.add(client(
+            false,
+            i['id'].toString(),
+            i['name'].toString(),
+            i['oldcounter'].toString(),
+            '0',
+            setcontname(
+                'controller' + Clients.indexOf(i).toString()),
+            getphone(i['clientcode'].toString()),
+            false
+          ));
+        }
+      }
+    }
+
+    EasyLoading.dismiss();
+    update();
+  }
+
+  int getcount()  {
+
+    return offlinelist.length;
+  }
+  void getonline()async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      connected =true;
+      // I am connected to a mobile network.
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      connected =true;
+      // I am connected to a wifi network.
+    }
+    else{
+      connected =false;
+    }
+    update();
+  }
+  void getofflinelist() async{
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    offlinelist=json.decode(_prefs.getString('offlinelist').toString());
+    getcount();
+    update();
   }
 }
